@@ -8,38 +8,38 @@ Strict mode always. No implicit coercion. Explicit over clever.
 
 ## Quick Reference
 
-| Rule       | Do                          | Don't                          |
-| ---------- | --------------------------- | ------------------------------ |
-| Mode       | `"use strict"` or ESM       | Sloppy mode                    |
-| Equality   | `===` and `!==`             | `==` and `!=`                  |
-| Variables  | `const` by default, `let`   | `var`                          |
-| Modules    | ESM (`import`/`export`)     | CommonJS unless Node.js requires it |
-| Async      | `async/await`               | Callback chains, `.then()`     |
-| Logging    | Structured logger           | `console.log` in production    |
-| Null check | Optional chaining `?.`      | Nested `if` checks             |
-| Types      | JSDoc annotations on public API | Untyped public functions    |
+| Rule       | Do                              | Don't                               |
+| ---------- | ------------------------------- | ----------------------------------- |
+| Mode       | `"use strict"` or ESM           | Sloppy mode                         |
+| Equality   | `===` and `!==`                 | `==` and `!=`                       |
+| Variables  | `const` by default, `let`       | `var`                               |
+| Modules    | ESM (`import`/`export`)         | CommonJS unless Node.js requires it |
+| Async      | `async/await`                   | Callback chains, `.then()`          |
+| Logging    | Structured logger               | `console.log` in production         |
+| Null check | Optional chaining `?.`          | Nested `if` checks                  |
+| Types      | JSDoc annotations on public API | Untyped public functions            |
 
 ---
 
 ## File Structure
 
-| Order | Section        | Required      |
-| ----- | -------------- | ------------- |
-| 1     | `@fileoverview` | Yes          |
-| 2     | Imports        | Yes           |
-| 3     | Constants      | If any        |
-| 4     | Implementation | Yes           |
-| 5     | Exports        | If not inline |
+| Order | Section         | Required      |
+| ----- | --------------- | ------------- |
+| 1     | `@fileoverview` | Yes           |
+| 2     | Imports         | Yes           |
+| 3     | Constants       | If any        |
+| 4     | Implementation  | Yes           |
+| 5     | Exports         | If not inline |
 
 ---
 
 ## Modules
 
-| Context | Use | Reason |
-| ------- | --- | ------ |
-| Browser | ESM | Native support, tree-shaking |
-| Node.js (new) | ESM with `"type": "module"` in `package.json` | Modern standard |
-| Node.js (legacy/compatibility) | CommonJS | When ESM is not supported by dependencies |
+| Context                        | Use                                           | Reason                                    |
+| ------------------------------ | --------------------------------------------- | ----------------------------------------- |
+| Browser                        | ESM                                           | Native support, tree-shaking              |
+| Node.js (new)                  | ESM with `"type": "module"` in `package.json` | Modern standard                           |
+| Node.js (legacy/compatibility) | CommonJS                                      | When ESM is not supported by dependencies |
 
 When using ESM:
 
@@ -64,36 +64,36 @@ Never mix `require` and `import` in the same file.
 
 Group with blank lines between:
 
-| Group    | Order | Example                                     |
-| -------- | ----- | ------------------------------------------- |
+| Group    | Order | Example                                        |
+| -------- | ----- | ---------------------------------------------- |
 | Node.js  | 1     | `import { readFile } from "node:fs/promises";` |
-| External | 2     | `import express from "express";`            |
-| Internal | 3     | `import { validate } from "./utils.js";`    |
+| External | 2     | `import express from "express";`               |
+| Internal | 3     | `import { validate } from "./utils.js";`       |
 
-| Rule           | Good                         | Bad                              |
-| -------------- | ---------------------------- | -------------------------------- |
-| Named imports  | `import { foo } from "mod";` | `import * as mod from "mod";`    |
-| File extension | `from "./mod.js";`           | `from "./mod";` (ambiguous)      |
-| Node prefix    | `from "node:fs";`            | `from "fs";` (ambiguous in ESM)  |
+| Rule           | Good                         | Bad                             |
+| -------------- | ---------------------------- | ------------------------------- |
+| Named imports  | `import { foo } from "mod";` | `import * as mod from "mod";`   |
+| File extension | `from "./mod.js";`           | `from "./mod";` (ambiguous)     |
+| Node prefix    | `from "node:fs";`            | `from "fs";` (ambiguous in ESM) |
 
 ---
 
 ## Naming
 
-| Item        | Convention        | Example              |
-| ----------- | ----------------- | -------------------- |
-| Classes     | `PascalCase`      | `UserService`        |
-| Functions   | `camelCase`       | `findUser`, `isValid` |
-| Constants   | `SCREAMING_SNAKE` | `MAX_RETRIES`        |
-| Variables   | `camelCase`       | `userId`, `isActive` |
-| Files       | `kebab-case`      | `user-service.js`    |
-| Private     | Leading `_` or `#` | `_cache`, `#secret` |
+| Item      | Convention         | Example               |
+| --------- | ------------------ | --------------------- |
+| Classes   | `PascalCase`       | `UserService`         |
+| Functions | `camelCase`        | `findUser`, `isValid` |
+| Constants | `SCREAMING_SNAKE`  | `MAX_RETRIES`         |
+| Variables | `camelCase`        | `userId`, `isActive`  |
+| Files     | `kebab-case`       | `user-service.js`     |
+| Private   | Leading `_` or `#` | `_cache`, `#secret`   |
 
-| Prefix/Suffix | Use For | Example |
-| ------------- | ------- | ------- |
-| `is*`, `has*`, `can*` | Booleans | `isActive`, `hasPermission` |
-| `create*` | Factories | `createUser()` |
-| `handle*` | Event handlers | `handleClick()` |
+| Prefix/Suffix         | Use For        | Example                     |
+| --------------------- | -------------- | --------------------------- |
+| `is*`, `has*`, `can*` | Booleans       | `isActive`, `hasPermission` |
+| `create*`             | Factories      | `createUser()`              |
+| `handle*`             | Event handlers | `handleClick()`             |
 
 ---
 
@@ -135,34 +135,34 @@ export class AppError extends Error {
 }
 ```
 
-| Rule | Detail |
-| ---- | ------ |
-| Custom error classes | Extend `Error` with `code` and `statusCode` |
-| Catch at boundaries | Route handlers, event listeners — not in business logic |
-| Never swallow | Always log or re-throw |
-| Specific catches | Check `instanceof` before handling |
+| Rule                 | Detail                                                  |
+| -------------------- | ------------------------------------------------------- |
+| Custom error classes | Extend `Error` with `code` and `statusCode`             |
+| Catch at boundaries  | Route handlers, event listeners — not in business logic |
+| Never swallow        | Always log or re-throw                                  |
+| Specific catches     | Check `instanceof` before handling                      |
 
 ---
 
 ## Async
 
-| Rule | Detail |
-| ---- | ------ |
-| Always async/await | Never use `.then()` chains |
-| Parallel when independent | `Promise.all([a(), b(), c()])` |
-| Explicit void | `void fireAndForget()` for intentional floating promises |
-| Add timeouts | `Promise.race` with `setTimeout` rejection for external calls |
-| Error handling | `try/catch` around await, not `.catch()` |
+| Rule                      | Detail                                                        |
+| ------------------------- | ------------------------------------------------------------- |
+| Always async/await        | Never use `.then()` chains                                    |
+| Parallel when independent | `Promise.all([a(), b(), c()])`                                |
+| Explicit void             | `void fireAndForget()` for intentional floating promises      |
+| Add timeouts              | `Promise.race` with `setTimeout` rejection for external calls |
+| Error handling            | `try/catch` around await, not `.catch()`                      |
 
 ---
 
 ## Classes vs Functions
 
-| Use Classes | Use Functions |
-| ----------- | ------------- |
-| Stateful services | Stateless utilities |
+| Use Classes                   | Use Functions        |
+| ----------------------------- | -------------------- |
+| Stateful services             | Stateless utilities  |
 | Private state with `#` fields | Pure transformations |
-| Complex lifecycle | Simple operations |
+| Complex lifecycle             | Simple operations    |
 
 Prefer composition over inheritance. Use `#private` fields (ES2022) over naming conventions.
 
@@ -170,13 +170,13 @@ Prefer composition over inheritance. Use `#private` fields (ES2022) over naming 
 
 ## Testing
 
-| Rule | Detail |
-| ---- | ------ |
-| Framework | Vitest or Jest |
-| Structure | `describe` > `it("should ...")` |
-| Pattern | Arrange / Act / Assert |
-| Assertions | Specific: `toEqual`, `toHaveLength`, not `toBeTruthy` |
-| No globals in tests | Import explicitly from test framework |
+| Rule                | Detail                                                |
+| ------------------- | ----------------------------------------------------- |
+| Framework           | Vitest or Jest                                        |
+| Structure           | `describe` > `it("should ...")`                       |
+| Pattern             | Arrange / Act / Assert                                |
+| Assertions          | Specific: `toEqual`, `toHaveLength`, not `toBeTruthy` |
+| No globals in tests | Import explicitly from test framework                 |
 
 ---
 
@@ -193,9 +193,9 @@ Prefer composition over inheritance. Use `#private` fields (ES2022) over naming 
 | `new Function()` | Same as eval          | Direct code              |
 | Implicit globals | Missing `const`/`let` | Always declare variables |
 
-| Exception      | Allowed When               |
-| -------------- | -------------------------- |
-| `console.log`  | Development / debugging    |
+| Exception      | Allowed When                                   |
+| -------------- | ---------------------------------------------- |
+| `console.log`  | Development / debugging                        |
 | `==` with null | `value == null` checks both null and undefined |
 
 ---
@@ -216,4 +216,4 @@ npm test
 | No `var` declarations       | [ ]    |
 | No `==` (except null check) | [ ]    |
 | Public functions have JSDoc | [ ]    |
-| `"use strict"` or ESM      | [ ]    |
+| `"use strict"` or ESM       | [ ]    |

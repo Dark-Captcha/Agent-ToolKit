@@ -1,6 +1,6 @@
 # TypeScript Coding Standards
 
-> **Version:** 2.1.0 | **Status:** Active | **Updated:** 2026-04-10
+> **Version:** 1.0.0 | **Status:** Active | **Updated:** 2026-04-10
 
 Type everything. Avoid `any`. Explicit over implicit.
 
@@ -122,12 +122,12 @@ export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus];
 
 ## Functions
 
-| Rule | Detail |
-| ---- | ------ |
-| Explicit return types | Always declare return type on public functions |
-| Parameter objects | Use an interface for 3+ params |
-| Early returns | Guard clauses at top, main logic below |
-| Explicit temporaries | Break chained calls into named steps for debugging |
+| Rule                  | Detail                                             |
+| --------------------- | -------------------------------------------------- |
+| Explicit return types | Always declare return type on public functions     |
+| Parameter objects     | Use an interface for 3+ params                     |
+| Early returns         | Guard clauses at top, main logic below             |
+| Explicit temporaries  | Break chained calls into named steps for debugging |
 
 ---
 
@@ -147,12 +147,12 @@ Catch at boundaries (route handlers, event listeners), not in business logic. Le
 
 ## Async
 
-| Rule | Detail |
-| ---- | ------ |
-| Always async/await | Never use `.then()` chains |
-| Parallel when independent | `Promise.all([a(), b(), c()])` |
-| Explicit void | `void fireAndForget()` for intentional floating promises |
-| Always add timeouts | `Promise.race` with timeout for external calls |
+| Rule                      | Detail                                                   |
+| ------------------------- | -------------------------------------------------------- |
+| Always async/await        | Never use `.then()` chains                               |
+| Parallel when independent | `Promise.all([a(), b(), c()])`                           |
+| Explicit void             | `void fireAndForget()` for intentional floating promises |
+| Always add timeouts       | `Promise.race` with timeout for external calls           |
 
 ---
 
@@ -170,13 +170,13 @@ Prefer composition over inheritance. Use constructor injection for dependencies.
 
 ## Testing
 
-| Rule | Detail |
-| ---- | ------ |
-| Framework | Vitest preferred |
-| Structure | `describe` > `it("should ...")` |
-| Pattern | Arrange / Act / Assert |
+| Rule       | Detail                                                |
+| ---------- | ----------------------------------------------------- |
+| Framework  | Vitest preferred                                      |
+| Structure  | `describe` > `it("should ...")`                       |
+| Pattern    | Arrange / Act / Assert                                |
 | Assertions | Specific: `toEqual`, `toHaveLength`, not `toBeTruthy` |
-| Mocking | `vi.fn()`, `vi.mocked()` |
+| Mocking    | `vi.fn()`, `vi.mocked()`                              |
 
 ---
 

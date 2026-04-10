@@ -1,6 +1,6 @@
 # Rust Coding Standards
 
-> **Version:** 2.1.0 | **Status:** Active | **Updated:** 2026-04-10
+> **Version:** 1.0.0 | **Status:** Active | **Updated:** 2026-04-10
 
 Safe by default. Explicit over implicit. No panics in production.
 
@@ -65,13 +65,13 @@ Group with blank lines between:
 | Lifetimes     | Short lowercase   | `'a`, `'de`             |
 | Type params   | Single uppercase  | `T`, `E`, `Item`        |
 
-| Prefix/Suffix | Use For              | Example          |
-| ------------- | -------------------- | ---------------- |
-| `is_*`, `has_*` | Boolean getters    | `is_empty()`     |
-| `with_*`      | Builder methods      | `with_timeout()` |
-| `into_*`      | Consuming conversion | `into_inner()`   |
-| `as_*`        | Borrowing conversion | `as_str()`       |
-| `try_*`       | Fallible operation   | `try_from()`     |
+| Prefix/Suffix   | Use For              | Example          |
+| --------------- | -------------------- | ---------------- |
+| `is_*`, `has_*` | Boolean getters      | `is_empty()`     |
+| `with_*`        | Builder methods      | `with_timeout()` |
+| `into_*`        | Consuming conversion | `into_inner()`   |
+| `as_*`          | Borrowing conversion | `as_str()`       |
+| `try_*`         | Fallible operation   | `try_from()`     |
 
 ---
 
@@ -141,12 +141,12 @@ let file = File::open(path)
 
 ## Async
 
-| Rule | Detail |
-| ---- | ------ |
-| No blocking in async | Use `tokio::fs` not `std::fs`. Use `spawn_blocking` for CPU work. |
-| Parallel when independent | `tokio::join!` for concurrent operations. |
-| Always add timeouts | Wrap external calls with `timeout()`. |
-| Use `select!` for racing | First-completed wins. |
+| Rule                      | Detail                                                            |
+| ------------------------- | ----------------------------------------------------------------- |
+| No blocking in async      | Use `tokio::fs` not `std::fs`. Use `spawn_blocking` for CPU work. |
+| Parallel when independent | `tokio::join!` for concurrent operations.                         |
+| Always add timeouts       | Wrap external calls with `timeout()`.                             |
+| Use `select!` for racing  | First-completed wins.                                             |
 
 ---
 
@@ -154,28 +154,28 @@ let file = File::open(path)
 
 Every `unsafe` block requires:
 
-| Requirement | Detail |
-| ----------- | ------ |
-| Safety comment | Explain why it is safe |
-| Minimal scope | Smallest possible unsafe block |
-| Safe wrapper | Public API must be safe |
+| Requirement    | Detail                         |
+| -------------- | ------------------------------ |
+| Safety comment | Explain why it is safe         |
+| Minimal scope  | Smallest possible unsafe block |
+| Safe wrapper   | Public API must be safe        |
 
-| Allowed | Not Allowed |
-| ------- | ----------- |
-| FFI bindings | Convenience |
-| Measured hot paths | Premature optimization |
+| Allowed                | Not Allowed             |
+| ---------------------- | ----------------------- |
+| FFI bindings           | Convenience             |
+| Measured hot paths     | Premature optimization  |
 | Low-level abstractions | Avoiding borrow checker |
 
 ---
 
 ## Testing
 
-| Rule | Detail |
-| ---- | ------ |
-| Location | `#[cfg(test)] mod tests` in file, integration tests in `tests/` |
-| Naming | `test_parse_valid_input_returns_ok` — descriptive |
+| Rule       | Detail                                                                             |
+| ---------- | ---------------------------------------------------------------------------------- |
+| Location   | `#[cfg(test)] mod tests` in file, integration tests in `tests/`                    |
+| Naming     | `test_parse_valid_input_returns_ok` — descriptive                                  |
 | Assertions | Always include context: `assert!(result.is_ok(), "Expected Ok, got {:?}", result)` |
-| Async | Use `#[tokio::test]` |
+| Async      | Use `#[tokio::test]`                                                               |
 
 ---
 
@@ -219,11 +219,11 @@ cargo clippy -- -D warnings
 cargo test
 ```
 
-| Check                        | Status |
-| ---------------------------- | ------ |
-| `cargo fmt` passes           | [ ]    |
-| `cargo clippy -D warnings`   | [ ]    |
-| `cargo test` passes          | [ ]    |
-| No `unwrap()` in prod code   | [ ]    |
-| All public items documented  | [ ]    |
+| Check                         | Status |
+| ----------------------------- | ------ |
+| `cargo fmt` passes            | [ ]    |
+| `cargo clippy -D warnings`    | [ ]    |
+| `cargo test` passes           | [ ]    |
+| No `unwrap()` in prod code    | [ ]    |
+| All public items documented   | [ ]    |
 | All unsafe has safety comment | [ ]    |

@@ -30,53 +30,37 @@ Agent-ToolKit/
 
 ## Design Principles
 
-| Principle | Detail |
-| --------- | ------ |
+| Principle                      | Detail                                                             |
+| ------------------------------ | ------------------------------------------------------------------ |
 | Rules-dense, not example-dense | AI follows short rules. Long tutorials get ignored after line 200. |
-| Load only what the task needs | Rules always. Standards per-language. Knowledge per-domain. |
-| Universal across tools | Plain markdown. No tool-specific format inside content files. |
-| Strict, imperative, no filler | Every line earns its place. No prose that restates a table. |
+| Load only what the task needs  | Rules always. Standards per-language. Knowledge per-domain.        |
+| Universal across tools         | Plain markdown. No tool-specific format inside content files.      |
+| Strict, imperative, no filler  | Every line earns its place. No prose that restates a table.        |
 
 ---
 
 ## Loading Strategy
 
-| Layer | Files | When to load | Token cost |
-| ----- | ----- | ------------ | ---------- |
-| Rules | `rules.md` | Every session, every tool | ~500 tokens |
-| Standards | `standards/{lang}.md` | When writing code in that language | ~1K tokens each |
-| Knowledge | `knowledge/{domain}/*` | When working in that domain | Varies (large) |
-| Agents | `agents/*.md` | Claude Code only, per-capability | ~3K tokens each |
+| Layer     | Files                  | When to load                       | Token cost      |
+| --------- | ---------------------- | ---------------------------------- | --------------- |
+| Rules     | `rules.md`             | Every session, every tool          | ~500 tokens     |
+| Standards | `standards/{lang}.md`  | When writing code in that language | ~1K tokens each |
+| Knowledge | `knowledge/{domain}/*` | When working in that domain        | Varies (large)  |
+| Agents    | `agents/*.md`          | Tools with agent support, per-capability | ~3K tokens each |
 
 ---
 
 ## Usage
 
-### Claude Code
+Copy `rules.md` into your tool's instruction file. Append the relevant language standard. Copy agent files if the tool supports custom agents.
 
-Copy `rules.md` content into your project's `CLAUDE.md` or global `~/.claude/CLAUDE.md`. Append the relevant language standard. Copy agent files to `.claude/agents/`.
-
-### Cursor
-
-Copy `rules.md` content into `.cursor/rules/core.mdc` with frontmatter:
-
-```yaml
----
-description: Core coding rules
-globs: ["**/*"]
-alwaysApply: true
----
-```
-
-Add language standards as separate `.mdc` files with appropriate glob patterns.
-
-### Codex (OpenAI)
-
-Copy `rules.md` content into the root `AGENTS.md`. Place language standards in relevant subdirectories.
-
-### Other Tools
-
-Copy `rules.md` into the tool's instruction file (`.windsurfrules`, `.clinerules`, etc.). Append language standards as needed.
+| Tool    | Instruction file                       | Agent directory      |
+| ------- | -------------------------------------- | -------------------- |
+| Claude Code | `CLAUDE.md` or `~/.claude/CLAUDE.md` | `.claude/agents/` |
+| Cursor  | `.cursor/rules/*.mdc`                  | N/A                  |
+| Codex   | `AGENTS.md`                            | N/A                  |
+| Windsurf | `.windsurfrules`                      | N/A                  |
+| Cline   | `.clinerules`                          | N/A                  |
 
 ---
 
