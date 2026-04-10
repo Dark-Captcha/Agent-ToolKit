@@ -1,6 +1,6 @@
 # TypeScript Coding Standards
 
-> **Version:** 1.0.0 | **Status:** Active | **Updated:** 2026-04-10
+> **Version:** 2.1.0 | **Status:** Active | **Updated:** 2026-04-10
 
 Type everything. Avoid `any`. Explicit over implicit.
 
