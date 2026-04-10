@@ -6,14 +6,14 @@ Universal rules, coding standards, and domain knowledge for AI coding agents. Wo
 
 ---
 
-| #   | Section                                    |
-| --- | ------------------------------------------ |
-| 1   | [Structure](#structure)                    |
-| 2   | [Design Principles](#design-principles)    |
-| 3   | [Loading Strategy](#loading-strategy)      |
-| 4   | [Usage](#usage)                            |
-| 5   | [Adding Content](#adding-content)          |
-| 6   | [License](#license)                        |
+| #   | Section                                 |
+| --- | --------------------------------------- |
+| 1   | [Structure](#structure)                 |
+| 2   | [Design Principles](#design-principles) |
+| 3   | [Loading Strategy](#loading-strategy)   |
+| 4   | [Usage](#usage)                         |
+| 5   | [Adding Content](#adding-content)       |
+| 6   | [License](#license)                     |
 
 ---
 
@@ -50,12 +50,12 @@ Agent-ToolKit/
 
 ## Loading Strategy
 
-| Layer     | Files                  | When to load                       | Token cost      |
-| --------- | ---------------------- | ---------------------------------- | --------------- |
-| Rules     | `rules.md`             | Every session, every tool          | ~500 tokens     |
-| Standards | `standards/{lang}.md`  | When writing code in that language | ~1K tokens each |
-| Knowledge | `knowledge/{domain}.md` | When working in that domain       | Varies (large)  |
-| Agents    | `agents/*.md`          | Tools with agent support, per-capability | ~3K tokens each |
+| Layer     | Files                   | When to load                             | Token cost      |
+| --------- | ----------------------- | ---------------------------------------- | --------------- |
+| Rules     | `rules.md`              | Every session, every tool                | ~500 tokens     |
+| Standards | `standards/{lang}.md`   | When writing code in that language       | ~1K tokens each |
+| Knowledge | `knowledge/{domain}.md` | When working in that domain              | Varies (large)  |
+| Agents    | `agents/*.md`           | Tools with agent support, per-capability | ~3K tokens each |
 
 ---
 
@@ -63,13 +63,13 @@ Agent-ToolKit/
 
 Copy `rules.md` into your tool's instruction file. Append the relevant language standard. Copy agent files if the tool supports custom agents.
 
-| Tool    | Instruction file                       | Agent directory      |
-| ------- | -------------------------------------- | -------------------- |
+| Tool        | Instruction file                     | Agent directory   |
+| ----------- | ------------------------------------ | ----------------- |
 | Claude Code | `CLAUDE.md` or `~/.claude/CLAUDE.md` | `.claude/agents/` |
-| Cursor  | `.cursor/rules/*.mdc`                  | N/A                  |
-| Codex   | `AGENTS.md`                            | N/A                  |
-| Windsurf | `.windsurfrules`                      | N/A                  |
-| Cline   | `.clinerules`                          | N/A                  |
+| Cursor      | `.cursor/rules/*.mdc`                | N/A               |
+| Codex       | `AGENTS.md`                          | N/A               |
+| Windsurf    | `.windsurfrules`                     | N/A               |
+| Cline       | `.clinerules`                        | N/A               |
 
 ---
 

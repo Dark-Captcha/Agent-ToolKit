@@ -1,25 +1,25 @@
 # OXC Reference
 
-> **Version:** 3.0.0 | **Status:** Active | **Updated:** 2026-04-10
+> **Version:** 1.0.0 | **Status:** Active | **Updated:** 2026-04-10
 
-OXC (Oxford Compiler Collection) crate ecosystem for JavaScript/TypeScript parsing, analysis, transformation, and code generation in Rust. Organized bottom-up by dependency layer.
+OXC (Oxford Compiler Collection) crate ecosystem for JavaScript/TypeScript parsing, analysis, transformation, and code generation in Rust. Verified against **OXC v0.124.0**. Organized bottom-up by dependency layer.
 
 ---
 
-| #   | Section                                    |
-| --- | ------------------------------------------ |
-| 1   | [Invariants](#invariants)                  |
-| 2   | [Layer 0 — Memory](#layer-0--memory)       |
+| #   | Section                                      |
+| --- | -------------------------------------------- |
+| 1   | [Invariants](#invariants)                    |
+| 2   | [Layer 0 — Memory](#layer-0--memory)         |
 | 3   | [Layer 1 — Primitives](#layer-1--primitives) |
-| 4   | [Layer 2 — AST](#layer-2--ast)             |
-| 5   | [Layer 3 — Parser](#layer-3--parser)       |
-| 6   | [Layer 4 — Semantics](#layer-4--semantics) |
-| 7   | [Layer 5 — Traversal](#layer-5--traversal) |
-| 8   | [Layer 6 — Analysis](#layer-6--analysis)   |
-| 9   | [Layer 7 — Codegen](#layer-7--codegen)     |
-| 10  | [Common Patterns](#common-patterns)        |
-| 11  | [Anti-Patterns](#anti-patterns)            |
-| 12  | [Safety Summary](#safety-summary)          |
+| 4   | [Layer 2 — AST](#layer-2--ast)               |
+| 5   | [Layer 3 — Parser](#layer-3--parser)         |
+| 6   | [Layer 4 — Semantics](#layer-4--semantics)   |
+| 7   | [Layer 5 — Traversal](#layer-5--traversal)   |
+| 8   | [Layer 6 — Analysis](#layer-6--analysis)     |
+| 9   | [Layer 7 — Codegen](#layer-7--codegen)       |
+| 10  | [Common Patterns](#common-patterns)          |
+| 11  | [Anti-Patterns](#anti-patterns)              |
+| 12  | [Safety Summary](#safety-summary)            |
 
 ---
 
@@ -27,13 +27,13 @@ OXC (Oxford Compiler Collection) crate ecosystem for JavaScript/TypeScript parsi
 
 These apply to every layer. Violating any causes UB, panics, or silent corruption.
 
-| #   | Rule                              | Detail                                                             |
-| --- | --------------------------------- | ------------------------------------------------------------------ |
-| 1   | Arena allocation                  | All AST nodes live in `Allocator`. No individual `Drop`.           |
+| #   | Rule                              | Detail                                                            |
+| --- | --------------------------------- | ----------------------------------------------------------------- |
+| 1   | Arena allocation                  | All AST nodes live in `Allocator`. No individual `Drop`.          |
 | 2   | `clone_in`/`take_in` preserve IDs | `SymbolId`/`ReferenceId`/`ScopeId` survive. `.clone()` forbidden. |
-| 3   | "Without" type safety             | Compile-time prevents child-field aliasing in traversal.           |
-| 4   | Generated code is authoritative   | `*/generated/` files are auto-generated. Never edit.               |
-| 5   | IDs are `NonMaxU32`               | Valid IDs are never `u32::MAX`. Stored in `Cell<Option<_>>`.       |
+| 3   | "Without" type safety             | Compile-time prevents child-field aliasing in traversal.          |
+| 4   | Generated code is authoritative   | `*/generated/` files are auto-generated. Never edit.              |
+| 5   | IDs are `NonMaxU32`               | Valid IDs are never `u32::MAX`. Stored in `Cell<Option<_>>`.      |
 
 ---
 
@@ -53,11 +53,11 @@ allocator.reset();                                  // Reuse memory
 
 ### Arena Types
 
-| Type                | Creation                         |
-| ------------------- | -------------------------------- |
-| `Box<'a, T>`        | `Box::new_in(value, &allocator)` |
-| `Vec<'a, T>`        | `Vec::new_in(&allocator)`        |
-| `HashMap<'a, K, V>` | `HashMap::new_in(&allocator)`    |
+| Type                | Creation                            |
+| ------------------- | ----------------------------------- |
+| `Box<'a, T>`        | `Box::new_in(value, &allocator)`    |
+| `Vec<'a, T>`        | `Vec::new_in(&allocator)`           |
+| `HashMap<'a, K, V>` | `HashMap::new_in(&allocator)`       |
 | `StringBuilder<'a>` | `StringBuilder::new_in(&allocator)` |
 
 `Sync` if contents are. **Not `Send`**.
@@ -66,11 +66,11 @@ allocator.reset();                                  // Reuse memory
 
 Both preserve semantic IDs (`SymbolId`, `ReferenceId`, `ScopeId`).
 
-| Operation  | Effect           | Leaves Behind       | Use When               |
-| ---------- | ---------------- | ------------------- | ---------------------- |
-| `clone_in` | Deep arena copy  | Original intact     | Need original + copy   |
+| Operation  | Effect           | Leaves Behind                                    | Use When               |
+| ---------- | ---------------- | ------------------------------------------------ | ---------------------- |
+| `clone_in` | Deep arena copy  | Original intact                                  | Need original + copy   |
 | `take_in`  | Move out of node | Dummy (NullLiteral / EmptyStatement / empty Vec) | Moving to new location |
-| Direct `*` | In-place replace | N/A                 | Simple replacement     |
+| Direct `*` | In-place replace | N/A                                              | Simple replacement     |
 
 **MUST** replace or remove dummy after `take_in`.
 
@@ -110,26 +110,30 @@ pub struct Span { pub start: u32, pub end: u32 }  // Byte range, 8 bytes
 pub const SPAN: Span = Span::new(0, 0);            // ALL generated nodes use this
 ```
 
-| Method             | Purpose                               |
-| ------------------ | ------------------------------------- |
-| `size()`           | `end - start`                         |
-| `is_unspanned()`   | `self == SPAN` (generated node)       |
-| `merge(other)`     | Smallest span containing both         |
-| `source_text(src)` | Extract source substring              |
+| Method             | Purpose                         |
+| ------------------ | ------------------------------- |
+| `size()`           | `end - start`                   |
+| `is_unspanned()`   | `self == SPAN` (generated node) |
+| `merge(other)`     | Smallest span containing both   |
+| `source_text(src)` | Extract source substring        |
 
 Traits: `GetSpan` on all AST nodes. `GetSpanMut` for rare location modification.
 
-### Atom<'a>
+### Ident<'a>
 
-Arena-allocated interned string. O(1) equality. Lifetime tied to allocator.
+Arena-allocated interned string (formerly `Atom`). O(1) equality. Lifetime tied to allocator.
 
 ```rust
-Atom::from("str")                                  // Borrows &str
-Atom::from_in("str", &allocator)                   // Allocates in arena
-format_atom!(&allocator, "prefix_{}", var)          // Format into arena
+Ident::from("str")                                         // Borrows &str
+let ident: Ident<'_> = FromIn::from_in("str", &allocator); // Allocates in arena (requires FromIn trait)
+Ident::from_strs_array_in(["a", "b"], &allocator)          // Concatenation in arena
 ```
 
-Used for: identifier names, string literal values, property names.
+Used for: identifier names, string literal values, property names. AstBuilder methods accept `impl Into<Ident<'a>>`, so `&str` and `String` work directly without explicit conversion.
+
+### Str<'a>
+
+Arena-allocated string for raw source text (string literal raw values). Similar to `Ident` but for non-identifier strings.
 
 ### CompactStr
 
@@ -137,12 +141,14 @@ Owned string, no lifetime. Inline storage for 16 bytes or less.
 
 ```rust
 CompactStr::new("short")
-atom.into_compact_str()  // Atom -> CompactStr
 ```
 
 ### ContentEq
 
+Import from `oxc::span::ContentEq`.
+
 ```rust
+use oxc::span::ContentEq;
 expr1.content_eq(&expr2)  // Structural equality, ignores spans
 ```
 
@@ -169,21 +175,21 @@ Queries: `is_javascript()`, `is_typescript()`, `is_module()`, `is_jsx()`, `is_st
 
 ## Layer 2 — AST
 
-Depends on: Layer 0 (arena), Layer 1 (Span, Atom).
+Depends on: Layer 0 (arena), Layer 1 (Span, Ident).
 
 ### Expression (~40 variants, `#[repr(C, u8)]`)
 
 All variants boxed: `Expression::StringLiteral(Box<'a, StringLiteral<'a>>)`.
 
-| Range | Category    | Variants                                                          |
-| ----- | ----------- | ----------------------------------------------------------------- |
-| 0-6   | Literals    | Boolean, Null, Numeric, String, Template, BigInt, RegExp          |
-| 10    | Identifier  | `IdentifierReference`                                             |
-| 20-21 | Collections | Array, Object                                                     |
-| 25-27 | Functions   | Arrow, Function, Class expression                                 |
-| 30-36 | Operations  | Unary, Binary, Logical, Conditional, Assignment, Sequence         |
-| 40-42 | Calls       | Call, New, Import                                                 |
-| 48-50 | Members     | Computed, Static, PrivateField (via `inherit_variants!`)          |
+| Range | Category    | Variants                                                  |
+| ----- | ----------- | --------------------------------------------------------- |
+| 0-6   | Literals    | Boolean, Null, Numeric, String, Template, BigInt, RegExp  |
+| 10    | Identifier  | `IdentifierReference`                                     |
+| 20-21 | Collections | Array, Object                                             |
+| 25-27 | Functions   | Arrow, Function, Class expression                         |
+| 30-36 | Operations  | Unary, Binary, Logical, Conditional, Assignment, Sequence |
+| 40-42 | Calls       | Call, New, Import                                         |
+| 48-50 | Members     | Computed, Static, PrivateField (via `inherit_variants!`)  |
 
 `inherit_variants!` flattens nested enums. `Expression::ComputedMemberExpression` exists directly. **`Expression::MemberExpression` does NOT exist** — use specific variants or `match_member_expression!()`.
 
@@ -222,17 +228,17 @@ pub struct Function<'a> {
 
 ### AstBuilder (Generated)
 
-All node creation goes through `AstBuilder` (accessed via `ctx.ast` in traversal):
+All node creation goes through `AstBuilder` (accessed via `ctx.ast` in traversal). Methods accept `impl Into<Ident<'a>>` — pass `&str` directly, no manual atom/ident creation needed.
 
 ```rust
 // Literals
-ctx.ast.expression_string_literal(SPAN, ctx.ast.atom("value"), None)
+ctx.ast.expression_string_literal(SPAN, "value", None)
 ctx.ast.expression_numeric_literal(SPAN, 42.0, None, NumberBase::Decimal)
 ctx.ast.expression_boolean_literal(SPAN, true)
 ctx.ast.expression_null_literal(SPAN)
 
 // Identifiers and operations
-ctx.ast.expression_identifier_reference(SPAN, ctx.ast.atom("name"))
+ctx.ast.expression_identifier(SPAN, "name")
 ctx.ast.expression_binary(SPAN, left, BinaryOperator::Addition, right)
 ctx.ast.expression_unary(SPAN, UnaryOperator::UnaryNegation, argument)
 
@@ -242,7 +248,7 @@ ctx.ast.statement_return(SPAN, Some(expr))
 ctx.ast.statement_block(SPAN, stmts)
 
 // Variable declaration
-ctx.ast.binding_identifier(SPAN, ctx.ast.atom("x"))
+ctx.ast.binding_identifier(SPAN, "x")
 ctx.ast.variable_declarator(SPAN, VariableDeclarationKind::Const, binding, Some(init), false)
 
 // Collections
@@ -282,7 +288,12 @@ Expression-only parsing: `Parser::new(...).parse_expression()?`.
 Depends on: Layer 2 (AST). Produces symbol table, reference table, scope tree.
 
 ```rust
-let scoping = SemanticBuilder::build(&program);
+let semantic_ret = SemanticBuilder::new().build(&program);
+// semantic_ret.errors: Vec<OxcDiagnostic>
+// semantic_ret.semantic: Semantic<'a>
+
+let scoping = semantic_ret.semantic.scoping();       // &Scoping (borrow)
+let scoping = semantic_ret.semantic.into_scoping();  // Scoping (owned, consumes Semantic)
 ```
 
 ### Scoping (SoA layout)
@@ -291,19 +302,19 @@ Unified structure containing symbols, references, and scope tree. `Send + Sync`.
 
 ### IDs
 
-| Type          | Represents           |
-| ------------- | -------------------- |
+| Type          | Represents            |
+| ------------- | --------------------- |
 | `SymbolId`    | Declaration (binding) |
-| `ReferenceId` | Usage (reference)    |
-| `ScopeId`     | Lexical scope        |
+| `ReferenceId` | Usage (reference)     |
+| `ScopeId`     | Lexical scope         |
 
 ### Flags
 
-| Type             | Key Values                                                               | Key Queries                                     |
-| ---------------- | ------------------------------------------------------------------------ | ----------------------------------------------- |
+| Type             | Key Values                                                                                      | Key Queries                                          |
+| ---------------- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
 | `SymbolFlags`    | `FunctionScopedVariable`, `BlockScopedVariable`, `ConstVariable`, `Function`, `Class`, `Import` | `is_const_variable()`, `is_function()`, `is_value()` |
-| `ReferenceFlags` | `Read`, `Write`, `Type`                                                 | `is_read()`, `is_write()`, `is_read_only()`     |
-| `ScopeFlags`     | `Top`, `Function`, `Arrow`, `StrictMode`                                | `is_var()` (hoisting boundary)                  |
+| `ReferenceFlags` | `Read`, `Write`, `Type`                                                                         | `is_read()`, `is_write()`, `is_read_only()`          |
+| `ScopeFlags`     | `Top`, `Function`, `Arrow`, `StrictMode`                                                        | `is_var()` (hoisting boundary)                       |
 
 ### Safe ID Resolution
 
@@ -331,7 +342,7 @@ scoping.symbol_name(id)                              // Name
 scoping.symbol_flags(id)                             // Flags
 scoping.get_resolved_references(id)                  // Iterator<Reference>
 scoping.get_reference(ref_id)                        // Single reference
-scoping.root_unresolved_references()                 // Globals: HashMap<&str, Vec<ReferenceId>>
+scoping.root_unresolved_references()                 // Globals: HashMap<Ident, Vec<ReferenceId>>
 scoping.find_binding(scope_id, "name")               // Scope lookup
 ```
 
@@ -347,15 +358,15 @@ scoping.get_resolved_references(id).filter(|r| r.flags().is_write()).count()
 
 ### Scoping Rebuild Rules
 
-| Situation                | Action  | Reason                      |
-| ------------------------ | ------- | --------------------------- |
-| Read-only pass           | Share   | IDs still valid             |
-| Collect + apply (no decls) | Share | References unchanged        |
-| Add/remove declarations  | Rebuild | IDs may invalidate          |
-| Rename identifiers       | Rebuild | Binding lookup changes      |
-| Before unused detection  | Rebuild | Need fresh reference counts |
+| Situation                  | Action  | Reason                      |
+| -------------------------- | ------- | --------------------------- |
+| Read-only pass             | Share   | IDs still valid             |
+| Collect + apply (no decls) | Share   | References unchanged        |
+| Add/remove declarations    | Rebuild | IDs may invalidate          |
+| Rename identifiers         | Rebuild | Binding lookup changes      |
+| Before unused detection    | Rebuild | Need fresh reference counts |
 
-Rebuild: `scoping = SemanticBuilder::build(&program);`
+Rebuild: `scoping = SemanticBuilder::new().build(&program).semantic.into_scoping();`
 
 ---
 
@@ -408,12 +419,12 @@ match ctx.parent() {
 
 ### Traverse vs VisitMut
 
-| Feature       | `Traverse` (`oxc_traverse`)  | `VisitMut` (`oxc_ast_visit`) |
-| ------------- | ---------------------------- | ---------------------------- |
-| Context       | Full `TraverseCtx`           | None                         |
-| Ancestors     | Yes                          | No                           |
-| Symbol access | Yes                          | No                           |
-| Use for       | **Any semantic-aware pass**  | Simple subtree transforms    |
+| Feature       | `Traverse` (`oxc_traverse`) | `VisitMut` (`oxc_ast_visit`) |
+| ------------- | --------------------------- | ---------------------------- |
+| Context       | Full `TraverseCtx`          | None                         |
+| Ancestors     | Yes                         | No                           |
+| Symbol access | Yes                         | No                           |
+| Use for       | **Any semantic-aware pass** | Simple subtree transforms    |
 
 Use `Traverse` for any pass that needs symbol resolution, ancestor context, or scope tracking. Use `VisitMut` only for syntactic subtree operations (e.g., parameter substitution in a cloned body).
 
@@ -431,11 +442,11 @@ Depends on: Layer 2 (AST), Layer 4 (semantics).
 
 ### ECMAScript Type Coercion
 
-| Trait        | Method           | Key Results                                           |
-| ------------ | ---------------- | ----------------------------------------------------- |
+| Trait        | Method           | Key Results                                            |
+| ------------ | ---------------- | ------------------------------------------------------ |
 | `ToBoolean`  | `to_boolean()`   | Falsey: `false`, `0`, `""`, `null`, `undefined`, `NaN` |
-| `ToNumber`   | `to_number()`    | `true`->1, `""`->0, `null`->0                         |
-| `ToJsString` | `to_js_string()` | `null`->"null", arrays joined with ","                |
+| `ToNumber`   | `to_number()`    | `true`->1, `""`->0, `null`->0                          |
+| `ToJsString` | `to_js_string()` | `null`->"null", arrays joined with ","                 |
 
 ### Constant Evaluation
 
@@ -462,12 +473,12 @@ expr.value_type(ctx) -> ValueType  // Undefined, Null, Number, String, Boolean, 
 
 ### Operators
 
-| Category | Enum               | Key Methods                                            |
-| -------- | ------------------ | ------------------------------------------------------ |
-| Binary   | `BinaryOperator`   | `is_equality()`, `is_arithmetic()`, `compare_inverse_operator()` |
-| Unary    | `UnaryOperator`    | `is_keyword()` (typeof, void, delete)                  |
-| Logical  | `LogicalOperator`  | `Or`, `And`, `Coalesce`, `to_assignment_operator()`    |
-| Update   | `UpdateOperator`   | `Increment`, `Decrement`                               |
+| Category | Enum              | Key Methods                                                      |
+| -------- | ----------------- | ---------------------------------------------------------------- |
+| Binary   | `BinaryOperator`  | `is_equality()`, `is_arithmetic()`, `compare_inverse_operator()` |
+| Unary    | `UnaryOperator`   | `is_keyword()` (typeof, void, delete)                            |
+| Logical  | `LogicalOperator` | `Or`, `And`, `Coalesce`, `to_assignment_operator()`              |
+| Update   | `UpdateOperator`  | `Increment`, `Decrement`                                         |
 
 Precedence: `expr.precedence()` or `op.precedence()` — used by codegen for parenthesization.
 
@@ -491,6 +502,8 @@ Depends on: Layer 2 (AST), optionally Layer 4 (semantics for mangling).
 ```rust
 Codegen::new().build(&program).code                                         // Pretty
 Codegen::new().with_options(CodegenOptions::minify()).build(&program).code   // Minified
+
+let scoping = semantic.into_scoping();                                      // Owned Scoping
 Codegen::new().with_scoping(Some(scoping)).build(&program).code             // Mangled
 ```
 
@@ -498,7 +511,7 @@ Codegen::new().with_scoping(Some(scoping)).build(&program).code             // M
 
 ## Common Patterns
 
-### Expression Replacement (in exit_*)
+### Expression Replacement (in exit\_\*)
 
 ```rust
 fn exit_expression(&mut self, expr: &mut Expression<'a>, ctx: &mut TraverseCtx<'a, ()>) {
@@ -556,17 +569,17 @@ visitor.visit_expression(&mut cloned_body);  // Auto-recursion via walk_mut
 
 ## Anti-Patterns
 
-| #  | Mistake                              | Fix                                     |
-| -- | ------------------------------------ | --------------------------------------- |
-| 1  | `.reference_id()` / `.symbol_id()`  | Use `.get()?` (direct accessors panic)  |
-| 2  | Stale scoping after structural changes | Rebuild: `SemanticBuilder::build()`  |
-| 3  | `.clone()` on AST nodes             | `clone_in(ctx.ast.allocator)`           |
-| 4  | Storing `&Expression` references     | Clone into `HashMap<SymbolId, Expression>` |
-| 5  | Replace in `enter_*`                | Use `exit_*` (children not yet processed) |
-| 6  | Manual recursion over ~50 variants   | Use `VisitMut` + `walk_mut::*`         |
-| 7  | Skip `ParenthesizedExpression`       | Always recurse into parens             |
-| 8  | Match `Expression::MemberExpression` | Does not exist — use specific variants |
-| 9  | `VisitMut` for semantic transforms   | Use `Traverse` (need symbols/ancestors) |
+| #   | Mistake                                | Fix                                        |
+| --- | -------------------------------------- | ------------------------------------------ |
+| 1   | `.reference_id()` / `.symbol_id()`     | Use `.get()?` (direct accessors panic)     |
+| 2   | Stale scoping after structural changes | Rebuild: `SemanticBuilder::build()`        |
+| 3   | `.clone()` on AST nodes                | `clone_in(ctx.ast.allocator)`              |
+| 4   | Storing `&Expression` references       | Clone into `HashMap<SymbolId, Expression>` |
+| 5   | Replace in `enter_*`                   | Use `exit_*` (children not yet processed)  |
+| 6   | Manual recursion over ~50 variants     | Use `VisitMut` + `walk_mut::*`             |
+| 7   | Skip `ParenthesizedExpression`         | Always recurse into parens                 |
+| 8   | Match `Expression::MemberExpression`   | Does not exist — use specific variants     |
+| 9   | `VisitMut` for semantic transforms     | Use `Traverse` (need symbols/ancestors)    |
 
 ---
 
@@ -578,22 +591,22 @@ visitor.visit_expression(&mut cloned_body);  // Auto-recursion via walk_mut
 | ------------------------------- | -------------------------------- |
 | `SPAN` for generated nodes      | Identifies synthetic nodes       |
 | Create nodes via `ctx.ast`      | Arena allocation                 |
-| `clone_in` / `take_in` for AST | Preserves semantic IDs           |
+| `clone_in` / `take_in` for AST  | Preserves semantic IDs           |
 | Dummy cleanup after `take_in`   | Prevents invalid AST             |
 | Recycle allocator via `reset()` | Performance, no unbounded growth |
 | `Traverse` for semantic passes  | Need symbols/ancestors           |
-| Transform in `exit_*`          | Children processed first         |
+| Transform in `exit_*`           | Children processed first         |
 | `.get()` for ID resolution      | Direct accessors panic           |
 | `ContentEq` for AST comparison  | Ignores spans                    |
 | Rebuild scoping after changes   | Stale IDs corrupt results        |
 
 **MUST NOT**:
 
-| Rule                               | Reason                   |
-| ---------------------------------- | ------------------------ |
-| `.clone()` on AST nodes            | Breaks lifetimes/IDs     |
-| `Drop` types in arena              | Compile-time forbidden   |
+| Rule                               | Reason                    |
+| ---------------------------------- | ------------------------- |
+| `.clone()` on AST nodes            | Breaks lifetimes/IDs      |
+| `Drop` types in arena              | Compile-time forbidden    |
 | Match `MemberExpression` directly  | Does not exist as variant |
 | `VisitMut` for semantic transforms | No symbol/ancestor access |
-| Hold ancestors across calls        | Stack invalidation       |
-| Assume `Vec` addresses stable      | Unstable after mutation  |
+| Hold ancestors across calls        | Stack invalidation        |
+| Assume `Vec` addresses stable      | Unstable after mutation   |

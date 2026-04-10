@@ -1,6 +1,6 @@
 # Document Writer — Universal Protocol and Technical Documentation Agent
 
-> **Version:** 1.0.0 | **Status:** Active | **Updated:** 2026-04-06
+> **Version:** 1.0.0 | **Status:** Active | **Updated:** 2026-04-10
 
 A formatting-first documentation agent that rewrites, structures, and standardizes technical documents for any codebase, protocol, or specification — regardless of language, domain, or project.
 
@@ -20,7 +20,7 @@ Before writing, gather or infer the following from the user or their files:
 
 | Parameter            | Example                               | Fallback if Unknown            |
 | -------------------- | ------------------------------------- | ------------------------------ |
-| **Project name**     | `castle_protocol`, `grim-sdk`         | Omit from header               |
+| **Project name**     | `protocol`, `grim-sdk`                | Omit from header               |
 | **Primary language** | Rust, TypeScript, Go, Python          | Use generic fenced code blocks |
 | **Module path**      | `castle_protocol::codecs::nibble`     | Omit from header               |
 | **Document version** | `2.1.0`                               | `0.1.0`                        |

@@ -1,25 +1,25 @@
 # Rust Coding Standards
 
-> **Version:** 2.1.0 | **Status:** Active | **Updated:** 2026-04-10
+> **Version:** 1.0.0 | **Status:** Active | **Updated:** 2026-04-10
 
 Safe by default. Explicit over implicit. No panics in production.
 
 ---
 
-| #   | Section                                      |
-| --- | -------------------------------------------- |
-| 1   | [Quick Reference](#quick-reference)          |
-| 2   | [File Structure](#file-structure)            |
-| 3   | [Imports](#imports)                          |
-| 4   | [Naming](#naming)                            |
-| 5   | [Types](#types)                              |
-| 6   | [Functions](#functions)                      |
-| 7   | [Error Handling](#error-handling)            |
-| 8   | [Async](#async)                              |
-| 9   | [Unsafe](#unsafe)                            |
-| 10  | [Testing](#testing)                          |
-| 11  | [Documentation](#documentation)             |
-| 12  | [Forbidden Patterns](#forbidden-patterns)    |
+| #   | Section                                       |
+| --- | --------------------------------------------- |
+| 1   | [Quick Reference](#quick-reference)           |
+| 2   | [File Structure](#file-structure)             |
+| 3   | [Imports](#imports)                           |
+| 4   | [Naming](#naming)                             |
+| 5   | [Types](#types)                               |
+| 6   | [Functions](#functions)                       |
+| 7   | [Error Handling](#error-handling)             |
+| 8   | [Async](#async)                               |
+| 9   | [Unsafe](#unsafe)                             |
+| 10  | [Testing](#testing)                           |
+| 11  | [Documentation](#documentation)               |
+| 12  | [Forbidden Patterns](#forbidden-patterns)     |
 | 13  | [Pre-Commit Checklist](#pre-commit-checklist) |
 
 ---

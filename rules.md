@@ -88,9 +88,9 @@ Debug in this order:
 | 3     | Docs                  |
 | 4     | Version compatibility |
 
-| Rule             | Detail                                                     |
-| ---------------- | ---------------------------------------------------------- |
-| No downgrades    | Never downgrade a library as a first step.                 |
+| Rule             | Detail                                                        |
+| ---------------- | ------------------------------------------------------------- |
+| No downgrades    | Never downgrade a library as a first step.                    |
 | No blind retries | Never repeat a failed approach. Diagnose why it failed first. |
 
 ---
