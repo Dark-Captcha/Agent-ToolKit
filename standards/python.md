@@ -6,6 +6,22 @@ Readability counts. Explicit over implicit. Type hints on public API. Fail fast 
 
 ---
 
+| #   | Section                                      |
+| --- | -------------------------------------------- |
+| 1   | [Quick Reference](#quick-reference)          |
+| 2   | [File Structure](#file-structure)            |
+| 3   | [Imports](#imports)                          |
+| 4   | [Naming](#naming)                            |
+| 5   | [Types](#types)                              |
+| 6   | [Functions](#functions)                      |
+| 7   | [Error Handling](#error-handling)            |
+| 8   | [Async](#async)                              |
+| 9   | [Testing](#testing)                          |
+| 10  | [Forbidden Patterns](#forbidden-patterns)    |
+| 11  | [Pre-Commit Checklist](#pre-commit-checklist) |
+
+---
+
 ## Quick Reference
 
 | Rule       | Do                                   | Don't                             |

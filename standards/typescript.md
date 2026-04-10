@@ -6,6 +6,24 @@ Type everything. Avoid `any`. Explicit over implicit.
 
 ---
 
+| #   | Section                                      |
+| --- | -------------------------------------------- |
+| 1   | [Quick Reference](#quick-reference)          |
+| 2   | [File Structure](#file-structure)            |
+| 3   | [Imports](#imports)                          |
+| 4   | [Naming](#naming)                            |
+| 5   | [Types](#types)                              |
+| 6   | [Functions](#functions)                      |
+| 7   | [Error Handling](#error-handling)            |
+| 8   | [Async](#async)                              |
+| 9   | [Classes](#classes)                          |
+| 10  | [Testing](#testing)                          |
+| 11  | [Documentation](#documentation)             |
+| 12  | [Forbidden Patterns](#forbidden-patterns)    |
+| 13  | [Pre-Commit Checklist](#pre-commit-checklist) |
+
+---
+
 ## Quick Reference
 
 | Rule      | Do                     | Don't              |

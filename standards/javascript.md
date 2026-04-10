@@ -6,6 +6,23 @@ Strict mode always. No implicit coercion. Explicit over clever.
 
 ---
 
+| #   | Section                                        |
+| --- | ---------------------------------------------- |
+| 1   | [Quick Reference](#quick-reference)            |
+| 2   | [File Structure](#file-structure)              |
+| 3   | [Modules](#modules)                            |
+| 4   | [Imports](#imports)                            |
+| 5   | [Naming](#naming)                              |
+| 6   | [JSDoc Types](#jsdoc-types)                    |
+| 7   | [Error Handling](#error-handling)              |
+| 8   | [Async](#async)                                |
+| 9   | [Classes vs Functions](#classes-vs-functions)   |
+| 10  | [Testing](#testing)                            |
+| 11  | [Forbidden Patterns](#forbidden-patterns)      |
+| 12  | [Pre-Commit Checklist](#pre-commit-checklist)  |
+
+---
+
 ## Quick Reference
 
 | Rule       | Do                              | Don't                               |

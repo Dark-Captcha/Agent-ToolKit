@@ -6,6 +6,23 @@ OXC (Oxford Compiler Collection) crate ecosystem for JavaScript/TypeScript parsi
 
 ---
 
+| #   | Section                                    |
+| --- | ------------------------------------------ |
+| 1   | [Invariants](#invariants)                  |
+| 2   | [Layer 0 — Memory](#layer-0--memory)       |
+| 3   | [Layer 1 — Primitives](#layer-1--primitives) |
+| 4   | [Layer 2 — AST](#layer-2--ast)             |
+| 5   | [Layer 3 — Parser](#layer-3--parser)       |
+| 6   | [Layer 4 — Semantics](#layer-4--semantics) |
+| 7   | [Layer 5 — Traversal](#layer-5--traversal) |
+| 8   | [Layer 6 — Analysis](#layer-6--analysis)   |
+| 9   | [Layer 7 — Codegen](#layer-7--codegen)     |
+| 10  | [Common Patterns](#common-patterns)        |
+| 11  | [Anti-Patterns](#anti-patterns)            |
+| 12  | [Safety Summary](#safety-summary)          |
+
+---
+
 ## Invariants
 
 These apply to every layer. Violating any causes UB, panics, or silent corruption.

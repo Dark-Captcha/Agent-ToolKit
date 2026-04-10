@@ -6,10 +6,25 @@ Imperative. No exceptions unless stated.
 
 ---
 
+| #   | Section                                     |
+| --- | ------------------------------------------- |
+| 1   | [Setup](#setup)                             |
+| 2   | [Before Writing Code](#before-writing-code) |
+| 3   | [Code](#code)                               |
+| 4   | [After Writing Code](#after-writing-code)   |
+| 5   | [Dependencies](#dependencies)               |
+| 6   | [Debug](#debug)                             |
+| 7   | [Git](#git)                                 |
+| 8   | [Communication](#communication)             |
+
+---
+
 ## Setup
 
-- Use CLI for all config changes.
-- Hand-edit only files with no CLI support (scripts, metadata).
+| Rule           | Detail                                                        |
+| -------------- | ------------------------------------------------------------- |
+| Use CLI        | Use CLI for all config changes.                               |
+| Hand-edit only | Hand-edit only files with no CLI support (scripts, metadata). |
 
 ---
 
@@ -55,8 +70,10 @@ Imperative. No exceptions unless stated.
 
 ## Dependencies
 
-- Prefer stdlib and existing deps.
-- Justify any new package. Never add one for trivial tasks.
+| Rule              | Detail                                                         |
+| ----------------- | -------------------------------------------------------------- |
+| Prefer stdlib     | Use stdlib and existing deps before adding new ones.           |
+| Justify additions | Never add a package for trivial tasks. State why it is needed. |
 
 ---
 
@@ -71,15 +88,19 @@ Debug in this order:
 | 3     | Docs                  |
 | 4     | Version compatibility |
 
-- Never downgrade a library as a first step.
-- Never repeat a failed approach. Diagnose why it failed first.
+| Rule             | Detail                                                     |
+| ---------------- | ---------------------------------------------------------- |
+| No downgrades    | Never downgrade a library as a first step.                 |
+| No blind retries | Never repeat a failed approach. Diagnose why it failed first. |
 
 ---
 
 ## Git
 
-- Never commit, amend, or rebase unless asked.
-- Never skip hooks or bypass signing unless asked.
+| Rule            | Detail                                           |
+| --------------- | ------------------------------------------------ |
+| No auto-commits | Never commit, amend, or rebase unless asked.     |
+| No skipping     | Never skip hooks or bypass signing unless asked. |
 
 ---
 

@@ -2,7 +2,18 @@
 
 > **Version:** 1.0.0 | **Status:** Active | **Updated:** 2026-04-10
 
-Universal rules, coding standards, and domain knowledge for AI coding agents. Works across Claude Code, Cursor, Codex, and any tool that reads markdown instructions.
+Universal rules, coding standards, and domain knowledge for AI coding agents. Works across any tool that reads markdown instructions.
+
+---
+
+| #   | Section                                    |
+| --- | ------------------------------------------ |
+| 1   | [Structure](#structure)                    |
+| 2   | [Design Principles](#design-principles)    |
+| 3   | [Loading Strategy](#loading-strategy)      |
+| 4   | [Usage](#usage)                            |
+| 5   | [Adding Content](#adding-content)          |
+| 6   | [License](#license)                        |
 
 ---
 
