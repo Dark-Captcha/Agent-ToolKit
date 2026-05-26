@@ -1,6 +1,6 @@
 # Agent-ToolKit
 
-> **Version:** 1.0.0 | **Status:** Active | **Updated:** 2026-04-10
+> **Version:** 1.0.1 | **Status:** Active | **Updated:** 2026-05-26
 
 Universal rules, coding standards, and domain knowledge for AI coding agents. Works across any tool that reads markdown instructions.
 
@@ -30,7 +30,8 @@ Agent-ToolKit/
 ├── knowledge/               <- Domain-specific reference material (load on demand)
 │   └── oxc.md
 ├── agents/                  <- Agent definitions (tools with agent support)
-│   └── document-writer.md
+│   ├── document-writer.md
+│   └── experiment-runner.md
 ├── README.md
 └── LICENSE
 ```
