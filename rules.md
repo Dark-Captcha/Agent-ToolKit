@@ -1,6 +1,6 @@
 # Core Rules
 
-> **Version:** 1.1.0 | **Status:** Active | **Updated:** 2026-05-26
+> **Version:** 1.1.0 | **Updated:** 2026-05-26
 
 Imperative. No exceptions unless stated.
 

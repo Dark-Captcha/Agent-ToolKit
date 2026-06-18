@@ -1,6 +1,6 @@
 # Agent-ToolKit
 
-> **Version:** 1.0.1 | **Status:** Active | **Updated:** 2026-05-26
+> **Version:** 1.0.1 | **Updated:** 2026-05-26
 
 Universal rules, coding standards, and domain knowledge for AI coding agents. Works across any tool that reads markdown instructions.
 
@@ -26,12 +26,14 @@ Agent-ToolKit/
 │   ├── rust.md
 │   ├── typescript.md
 │   ├── python.md
-│   └── javascript.md
+│   ├── javascript.md
+│   └── mojo.md
 ├── knowledge/               <- Domain-specific reference material (load on demand)
 │   └── oxc.md
 ├── agents/                  <- Agent definitions (tools with agent support)
 │   ├── document-writer.md
 │   └── experiment-runner.md
+├── CLAUDE.md                <- Claude Code router (references rules.md, no inline mirror)
 ├── README.md
 └── LICENSE
 ```
@@ -62,15 +64,24 @@ Agent-ToolKit/
 
 ## Usage
 
-Copy `rules.md` into your tool's instruction file. Append the relevant language standard. Copy agent files if the tool supports custom agents.
+`rules.md` is the single source of truth. Wire each tool to it — prefer **symlink/reference** over copy. Only copy when the tool cannot follow links or read additional files.
 
-| Tool        | Instruction file                     | Agent directory   |
-| ----------- | ------------------------------------ | ----------------- |
-| Claude Code | `CLAUDE.md` or `~/.claude/CLAUDE.md` | `.claude/agents/` |
-| Cursor      | `.cursor/rules/*.mdc`                | N/A               |
-| Codex       | `AGENTS.md`                          | N/A               |
-| Windsurf    | `.windsurfrules`                     | N/A               |
-| Cline       | `.clinerules`                        | N/A               |
+| Tool        | Instruction file         | Wiring                                                                                   | Agent directory                                        |
+| ----------- | ------------------------ | ---------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| Claude Code | `~/.claude/CLAUDE.md`    | **Symlink** to `Agent-ToolKit/CLAUDE.md` — that file references `rules.md` via Bootstrap | Symlink `~/.claude/agents/` to `Agent-ToolKit/agents/` |
+| Cursor      | `.cursor/rules/core.mdc` | Copy `rules.md` (Cursor needs frontmatter)                                               | N/A                                                    |
+| Codex       | `AGENTS.md`              | Symlink to `Agent-ToolKit/rules.md` if possible, else copy                               | N/A                                                    |
+| Windsurf    | `.windsurfrules`         | Symlink to `Agent-ToolKit/rules.md` if possible, else copy                               | N/A                                                    |
+| Cline       | `.clinerules`            | Symlink to `Agent-ToolKit/rules.md` if possible, else copy                               | N/A                                                    |
+
+### Claude Code setup (one-time)
+
+```bash
+ln -s ~/Documents/Agent-ToolKit/CLAUDE.md ~/.claude/CLAUDE.md
+ln -s ~/Documents/Agent-ToolKit/agents   ~/.claude/agents
+```
+
+`Agent-ToolKit/CLAUDE.md` is a thin router: it tells the agent to read `rules.md` at session start, then lists on-demand triggers for language standards and knowledge files. No rules are duplicated inside it — edit `rules.md` and every tool that points here picks up the change.
 
 ---
 

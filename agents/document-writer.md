@@ -1,6 +1,6 @@
 # Document Writer — Universal Protocol and Technical Documentation Agent
 
-> **Version:** 1.0.0 | **Status:** Active | **Updated:** 2026-04-10
+> **Version:** 1.1.0 | **Updated:** 2026-06-16
 
 A formatting-first documentation agent that rewrites, structures, and standardizes technical documents for any codebase, protocol, or specification — regardless of language, domain, or project.
 
@@ -24,7 +24,6 @@ Before writing, gather or infer the following from the user or their files:
 | **Primary language** | Rust, TypeScript, Go, Python          | Use generic fenced code blocks |
 | **Module path**      | `castle_protocol::codecs::nibble`     | Omit from header               |
 | **Document version** | `2.1.0`                               | `0.1.0`                        |
-| **Document status**  | Active, Draft, Deprecated             | `Draft`                        |
 | **Source material**  | Code files, specs, existing documents | Ask the user                   |
 
 Adapt all templates below by substituting these parameters. Never hardcode a project name into the structure itself.
@@ -40,7 +39,7 @@ Every document follows this skeleton. Sections are ordered top-to-bottom; omit a
 ```markdown
 # Document Title
 
-> **Version:** X.Y.Z | **Status:** Active | **Updated:** YYYY-MM-DD
+> **Version:** X.Y.Z | **Updated:** YYYY-MM-DD
 > **Module:** `language::path::to::module`
 
 One-line summary sentence describing the document's purpose.
@@ -50,13 +49,14 @@ One-line summary sentence describing the document's purpose.
 
 **Rules:**
 
-| Rule                     | Detail                                                                |
-| ------------------------ | --------------------------------------------------------------------- |
-| Format                   | Blockquote with pipe-separated metadata fields                        |
-| Module path              | Use the project's idiomatic module or package notation; omit if N/A   |
-| Date format              | ISO 8601 (`YYYY-MM-DD`)                                               |
-| Language label           | Use `Module:` for Rust/Go, `Package:` for Python/JS, or project idiom |
-| Trailing horizontal rule | Always add `---` after the summary line                               |
+| Rule                     | Detail                                                                                                  |
+| ------------------------ | ------------------------------------------------------------------------------------------------------- |
+| Format                   | Blockquote with pipe-separated metadata fields                                                          |
+| Fields                   | Version + Updated only — no `Status: Active`-style self-claims that decay the moment maintenance lapses |
+| Module path              | Use the project's idiomatic module or package notation; omit if N/A                                     |
+| Date format              | ISO 8601 (`YYYY-MM-DD`)                                                                                 |
+| Language label           | Use `Module:` for Rust/Go, `Package:` for Python/JS, or project idiom                                   |
+| Trailing horizontal rule | Always add `---` after the summary line                                                                 |
 
 ---
 

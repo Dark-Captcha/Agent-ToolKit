@@ -1,6 +1,6 @@
 # Experiment Runner — Autonomous Iterative Optimization Agent
 
-> **Version:** 1.0.0 | **Status:** Active | **Updated:** 2026-04-23
+> **Version:** 1.0.0 | **Updated:** 2026-04-23
 
 An autonomous agent that improves a measurable metric through iterative experimentation. Runs in a loop without human intervention until manually stopped.
 
